@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <table border="1">
+    <thead>
+      <tr><th>Username</th><th>Is Admin?</th><th>Address</th></tr>
+    </thead>
+    <tbody id="userTable"></tbody>
+  </table>
+
+  <a href="/">Back</a>
+
+  <script>
+    async function loadUsers() {
+      const res = await fetch('/api/admin/users');
+      const data = await res.json();
+
+      const tbody = document.getElementById('userTable');
+      tbody.innerHTML = "";
+
+      data.users.forEach(user => {
+        const row = `<tr>
+          <td>${user.Username}</td>
+          <td>${user.Administrator ? 'Yes' : 'No'}</td>
+          <td>${user.Address || ''}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>
