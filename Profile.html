@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="/public/styles.css">
+</head>
+<body>
+  <h1>Your Profile</h1>
+  <form id="profileForm">
+    <label>New Password (leave blank if no change):</label><br/>
+    <input type="password" name="password" /><br/><br/>
+
+    <label>Address:</label><br/>
+    <input type="text" name="address" /><br/><br/>
+
+    <label>Profile Picture URL:</label><br/>
+    <input type="text" name="profile_picture" /><br/><br/>
+
+    <button type="submit">Update Profile</button>
+  </form>
+
+  <div id="result"></div>
+
+  <a href="/">Back</a>
+
+  <script>
+    document.getElementById('profileForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const data = Object.fromEntries(formData.entries());
+
+      const res = await fetch('/api/profile/update', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+      document.getElementById('result').innerText = result.message;
+    });
+  </script>
+</body>
+</html>
